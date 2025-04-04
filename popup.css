@@ -1,15 +1,18 @@
 body {
   margin: 0;
   padding: 16px;
-  font-family: sans-serif;
+  font-family: "Helvetica", "Arial", "Yu Gothic", "Meiryo", sans-serif;
   max-width: 480px;
   margin-left: auto;
   margin-right: auto;
 }
 
-h2 {
-  font-size: 20px;
-  margin-bottom: 12px;
+h2.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 20px;
 }
 
 input {
