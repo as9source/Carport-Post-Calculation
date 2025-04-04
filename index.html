@@ -10,11 +10,12 @@
 <body>
   <h2 class="title">カーポート柱寸法計算</h2>
 
-  <label>柱の本数</label><br>
-  <label><input type="radio" name="postCount" value="2" checked> 2本</label>
-  <label><input type="radio" name="postCount" value="3"> 3本</label>
-  <label><input type="radio" name="postCount" value="4"> 4本</label>
-  <br><br>
+  <label for="postCount">柱の本数</label><br>
+  <select id="postCount" name="postCount">
+    <option value="2">2本</option>
+    <option value="3">3本</option>
+    <option value="4">4本</option>
+  </select><br>
 
   <input type="number" id="l1" placeholder="L1（最初の柱間）"><br>
   <input type="number" id="l2" placeholder="L2（中間の柱間）"><br>
