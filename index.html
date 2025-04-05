@@ -10,17 +10,17 @@
 <body>
   <img src="banner.png" alt="カーポート柱ピッチ計算バナー" style="width: 100%; height: auto; margin-bottom: 16px;" />
 
-    <label for="postCount">柱の本数</label><br>
+  <label for="postCount">柱の本数</label><br>
   <select id="postCount" name="postCount">
     <option value="2">2本</option>
     <option value="3">3本</option>
     <option value="4">4本</option>
   </select><br>
 
-  <input type="number" id="l1" placeholder="L1（最初の柱間）"><br>
-  <input type="number" id="l2" placeholder="L2（中間の柱間）"><br>
-  <input type="number" id="l3" placeholder="L3（最後の柱間）"><br>
-  <input type="number" id="newLength" placeholder="加工後の全長（L’）"><br><br>
+  <div class="input-container"><input type="number" id="l1"><span class="hint">L1</span></div>
+  <div class="input-container"><input type="number" id="l2"><span class="hint">L2</span></div>
+  <div class="input-container"><input type="number" id="l3"><span class="hint">L3</span></div>
+  <div class="input-container"><input type="number" id="newLength"><span class="hint">L’</span></div>
 
   <button id="calcBtn">計算</button>
   <div id="result"></div>
