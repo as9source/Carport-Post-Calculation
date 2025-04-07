@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const calculatedSum = rL1 + rL2 * l2Count + rL3;
 
       result = `
-        元の全長：${originalSum.toFixed(0)} mm<br>
+        元の全長：${originalSum.toFixed(0)} mm　※全長寸法確認<br>
         加工後の合計：${calculatedSum.toFixed(0)} mm<br>
         <br>
         加工後のL1：${rL1} mm<br>
