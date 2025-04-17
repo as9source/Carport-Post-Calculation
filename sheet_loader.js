@@ -58,10 +58,12 @@ function loadSheet() {
       const selectedType = typeSelector.value;
       const selectedSize = sizeSelector.value;
 
+      console.log("フィルタ対象:", selectedType, selectedSize);
       const counts = fullData
         .filter(d => d.type === selectedType && d.size === selectedSize)
         .map(d => parseInt(d.postCount));  // ← ここを数値化
 
+      console.log("柱本数候補:", counts);
       [...new Set(counts)].forEach(count => {
         const opt = document.createElement("option");
         opt.value = count;
