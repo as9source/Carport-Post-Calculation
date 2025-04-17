@@ -1,33 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <title>カーポート柱寸法計算（3段階選択）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>カーポート柱寸法計算</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="popup.css">
+  <link href="popup.css" rel="stylesheet">
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
-  <img src="banner.png" alt="カーポート柱ピッチ計算バナー" style="width: 100%; height: auto; margin-bottom: 16px;" />
-
-  <div id="result" style="margin-bottom: 20px;"></div>
-
-  <label for="postCount">柱の本数</label><br>
-  <select id="postCount" name="postCount">
-    <option value="2">2本</option>
-    <option value="3">3本</option>
-    <option value="4">4本</option>
-  </select><br>
-
-  <input type="number" id="l1" placeholder="L1（最初の柱間）"><br>
-  <input type="number" id="l2" placeholder="L2（中間の柱間）"><br>
-  <input type="number" id="l3" placeholder="L3（最後の柱間）"><br>
-  <input type="number" id="newLength" placeholder="加工後の全長（L’）"><br><br>
-
+  <h2>カーポート柱寸法計算</h2>
+  <label>種類</label>
+  <select id="typeSelector"><option value="">--選択--</option></select><br>
+  <label>サイズ</label>
+  <select id="sizeSelector"><option value="">--選択--</option></select><br>
+  <label>柱本数</label>
+  <input type="text" id="postCount" readonly><br>
+  <label>L1</label>
+  <input type="number" id="l1"><br>
+  <label>L2</label>
+  <input type="number" id="l2"><br>
+  <label>L3</label>
+  <input type="number" id="l3"><br>
+  <label>加工後の全長（L’）</label>
+  <input type="number" id="newLength"><br><br>
   <button id="calcBtn">計算</button>
-  <br><br>
-  <a href="usage.html" style="font-size:14px; text-decoration:underline;">▶ 使い方を見る</a>
-
+  <div id="result"></div>
   <script src="popup.js"></script>
+  <script src="sheet_loader.js"></script>
 </body>
 </html>
