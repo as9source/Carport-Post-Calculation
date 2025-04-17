@@ -60,7 +60,7 @@ function loadSheet() {
 
       const counts = fullData
         .filter(d => d.type === selectedType && d.size === selectedSize)
-        .map(d => d.postCount);
+        .map(d => parseInt(d.postCount));  // ← ここを数値化
 
       [...new Set(counts)].forEach(count => {
         const opt = document.createElement("option");
