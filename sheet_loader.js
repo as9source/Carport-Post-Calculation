@@ -79,7 +79,7 @@ function loadSheet() {
       const match = fullData.find(d =>
         d.type === selectedType &&
         d.size === selectedSize &&
-        d.postCount === selectedCount
+        parseInt(d.postCount) === selectedCount
       );
 
       if (match) {
