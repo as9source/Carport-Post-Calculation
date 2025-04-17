@@ -18,7 +18,12 @@
 
   <h2>カーポート柱寸法計算</h2>
 
-  <div id="modeSwitch" style="margin-bottom: 12px;">
+  
+    <div id="modeTabs" style="margin-bottom: 12px; display: flex; border-bottom: 2px solid #ccc;">
+      <div id="tabAuto" style="flex: 1; text-align: center; padding: 8px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-bottom: none;">製品選択モード</div>
+      <div id="tabManual" style="flex: 1; text-align: center; padding: 8px; cursor: pointer; border: 1px solid #ccc; border-left: none; border-bottom: none;">手動入力モード</div>
+    </div>
+    
     <label><input type="radio" name="mode" value="auto" checked> 製品選択モード</label>
     <label style="margin-left: 12px;"><input type="radio" name="mode" value="manual"> 手動入力モード</label>
   </div>
@@ -56,11 +61,40 @@
   <button id="calcBtn">計算</button>
 
   <p style="text-align: right; font-size: 12px; color: #888;">
-    🆕 バージョン：v1.2（最終更新：2025/04/18）
+    🆕 バージョン：v1.3（最終更新：2025/04/18）（最終更新：2025/04/18）
   </p>
 
   <script src="popup.js"></script>
   <script src="sheet_loader.js"></script>
+  <script>
+
+    const tabAuto = document.getElementById("tabAuto");
+    const tabManual = document.getElementById("tabManual");
+
+    function setMode(mode) {
+      if (mode === "auto") {
+        document.getElementById("autoSection").style.display = "block";
+        document.getElementById("manualSection").style.display = "none";
+        tabAuto.style.background = "#eee";
+        tabManual.style.background = "#fff";
+        tabAuto.style.fontWeight = "bold";
+        tabManual.style.fontWeight = "normal";
+      } else {
+        document.getElementById("autoSection").style.display = "none";
+        document.getElementById("manualSection").style.display = "block";
+        tabAuto.style.background = "#fff";
+        tabManual.style.background = "#eee";
+        tabManual.style.fontWeight = "bold";
+        tabAuto.style.fontWeight = "normal";
+      }
+    }
+
+    tabAuto.onclick = () => setMode("auto");
+    tabManual.onclick = () => setMode("manual");
+
+    // 初期化
+    setMode("auto");
+    </script>
   <script>
     // モード切替処理
     const modeRadios = document.querySelectorAll('input[name="mode"]');
