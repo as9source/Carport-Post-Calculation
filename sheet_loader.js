@@ -51,7 +51,8 @@ function loadSheet() {
     sizeSelector.addEventListener("change", () => {
       const item = productMap[typeSelector.value][sizeSelector.value];
       if (item) {
-                document.getElementById("l1").value = item.l1;
+        // 柱本数は手動選択にするため、自動設定は削除
+        document.getElementById("l1").value = item.l1;
         document.getElementById("l2").value = item.l2;
         document.getElementById("l3").value = item.l3;
       }
