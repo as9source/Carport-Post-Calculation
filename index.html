@@ -8,13 +8,23 @@
   <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
+  <img src="banner.png" alt="タイトルバナー" style="width: 100%; margin-bottom: 16px;" />
   <h2>カーポート柱寸法計算</h2>
+
   <label>種類</label>
   <select id="typeSelector"><option value="">--選択--</option></select><br>
+
   <label>サイズ</label>
   <select id="sizeSelector"><option value="">--選択--</option></select><br>
+
   <label>柱本数</label>
-  <input type="text" id="postCount" readonly><br>
+  <select id="postCount">
+    <option value="">--選択--</option>
+    <option value="2">2本</option>
+    <option value="3">3本</option>
+    <option value="4">4本</option>
+  </select><br>
+
   <label>L1</label>
   <input type="number" id="l1"><br>
   <label>L2</label>
@@ -23,8 +33,10 @@
   <input type="number" id="l3"><br>
   <label>加工後の全長（L’）</label>
   <input type="number" id="newLength"><br><br>
+
   <button id="calcBtn">計算</button>
   <div id="result"></div>
+
   <script src="popup.js"></script>
   <script src="sheet_loader.js"></script>
 </body>

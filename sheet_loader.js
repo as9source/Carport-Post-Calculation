@@ -25,6 +25,7 @@ function loadSheet() {
 
     const typeSelector = document.getElementById("typeSelector");
     const sizeSelector = document.getElementById("sizeSelector");
+    const postCountSelect = document.getElementById("postCount");
 
     typeSelector.innerHTML = '<option value="">--選択--</option>';
     for (let type in productMap) {
@@ -50,7 +51,7 @@ function loadSheet() {
     sizeSelector.addEventListener("change", () => {
       const item = productMap[typeSelector.value][sizeSelector.value];
       if (item) {
-        document.getElementById("postCount").value = item.postCount;
+        postCountSelect.value = item.postCount.toString();
         document.getElementById("l1").value = item.l1;
         document.getElementById("l2").value = item.l2;
         document.getElementById("l3").value = item.l3;
