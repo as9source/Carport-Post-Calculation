@@ -51,8 +51,7 @@ function loadSheet() {
     sizeSelector.addEventListener("change", () => {
       const item = productMap[typeSelector.value][sizeSelector.value];
       if (item) {
-        postCountSelect.value = item.postCount.toString();
-        document.getElementById("l1").value = item.l1;
+                document.getElementById("l1").value = item.l1;
         document.getElementById("l2").value = item.l2;
         document.getElementById("l3").value = item.l3;
       }

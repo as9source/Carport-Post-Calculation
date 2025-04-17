@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>カーポート柱寸法計算（3段階選択）</title>
+  <title>カーポート柱寸法計算（製品選択対応）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="popup.css" rel="stylesheet">
   <script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -11,10 +11,10 @@
   <img src="banner.png" alt="タイトルバナー" style="width: 100%; margin-bottom: 16px;" />
   <h2>カーポート柱寸法計算</h2>
 
-  <label>種類</label>
+  <label>製品名</label>
   <select id="typeSelector"><option value="">--選択--</option></select><br>
 
-  <label>サイズ</label>
+  <label>全長</label>
   <select id="sizeSelector"><option value="">--選択--</option></select><br>
 
   <label>柱本数</label>
@@ -36,9 +36,10 @@
 
   <button id="calcBtn">計算</button>
   <div id="result"></div>
-<p style="text-align: right; font-size: 12px; color: #888;">
-  🆕 バージョン：v1.0（最終更新：2025/04/17）
-</p>
+
+  <p style="text-align: right; font-size: 12px; color: #888;">
+    🆕 バージョン：v1.0（最終更新：2025/04/17）
+  </p>
 
   <script src="popup.js"></script>
   <script src="sheet_loader.js"></script>
