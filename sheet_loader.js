@@ -9,53 +9,90 @@ function loadSheet() {
   query.send(function(response) {
     const data = response.getDataTable();
     const rows = data.getNumberOfRows();
-    const productMap = {};
+    const fullData = [];
 
     for (let i = 0; i < rows; i++) {
-      const type = data.getValue(i, 0);
-      const size = data.getValue(i, 1);
-      const count = data.getValue(i, 2);
-      const l1 = data.getValue(i, 3);
-      const l2 = data.getValue(i, 4);
-      const l3 = data.getValue(i, 5);
-
-      if (!productMap[type]) productMap[type] = {};
-      productMap[type][size] = { postCount: count, l1, l2, l3 };
+      fullData.push({
+        type: data.getValue(i, 0),
+        size: data.getValue(i, 1),
+        postCount: data.getValue(i, 2),
+        l1: data.getValue(i, 3),
+        l2: data.getValue(i, 4),
+        l3: data.getValue(i, 5)
+      });
     }
 
     const typeSelector = document.getElementById("typeSelector");
     const sizeSelector = document.getElementById("sizeSelector");
-    const postCountSelect = document.getElementById("postCount");
+    const postCountSelector = document.getElementById("postCount");
 
     typeSelector.innerHTML = '<option value="">--選択--</option>';
-    for (let type in productMap) {
+    [...new Set(fullData.map(d => d.type))].forEach(type => {
       const opt = document.createElement("option");
       opt.value = type;
       opt.textContent = type;
       typeSelector.appendChild(opt);
-    }
+    });
 
     typeSelector.addEventListener("change", () => {
       sizeSelector.innerHTML = '<option value="">--選択--</option>';
+      postCountSelector.innerHTML = '<option value="">--選択--</option>';
+      clearLValues();
+
       const selectedType = typeSelector.value;
-      if (productMap[selectedType]) {
-        for (let size in productMap[selectedType]) {
-          const opt = document.createElement("option");
-          opt.value = size;
-          opt.textContent = size;
-          sizeSelector.appendChild(opt);
-        }
-      }
+      const sizes = [
+        ...new Set(fullData.filter(d => d.type === selectedType).map(d => d.size))
+      ];
+      sizes.forEach(size => {
+        const opt = document.createElement("option");
+        opt.value = size;
+        opt.textContent = size;
+        sizeSelector.appendChild(opt);
+      });
     });
 
     sizeSelector.addEventListener("change", () => {
-      const item = productMap[typeSelector.value][sizeSelector.value];
-      if (item) {
-        // 柱本数は手動選択にするため、自動設定は削除
-        document.getElementById("l1").value = item.l1;
-        document.getElementById("l2").value = item.l2;
-        document.getElementById("l3").value = item.l3;
+      postCountSelector.innerHTML = '<option value="">--選択--</option>';
+      clearLValues();
+
+      const selectedType = typeSelector.value;
+      const selectedSize = sizeSelector.value;
+
+      const counts = fullData
+        .filter(d => d.type === selectedType && d.size === selectedSize)
+        .map(d => d.postCount);
+
+      [...new Set(counts)].forEach(count => {
+        const opt = document.createElement("option");
+        opt.value = count;
+        opt.textContent = `${count}本`;
+        postCountSelector.appendChild(opt);
+      });
+    });
+
+    postCountSelector.addEventListener("change", () => {
+      clearLValues();
+      const selectedType = typeSelector.value;
+      const selectedSize = sizeSelector.value;
+      const selectedCount = parseInt(postCountSelector.value);
+
+      const match = fullData.find(d =>
+        d.type === selectedType &&
+        d.size === selectedSize &&
+        d.postCount === selectedCount
+      );
+
+      if (match) {
+        document.getElementById("l1").value = match.l1;
+        document.getElementById("l2").value = match.l2;
+        document.getElementById("l3").value = match.l3;
       }
     });
+
+    function clearLValues() {
+      document.getElementById("l1").value = '';
+      document.getElementById("l2").value = '';
+      document.getElementById("l3").value = '';
+    }
   });
 }
