@@ -1,41 +1,61 @@
 
 body {
   font-family: 'Noto Sans JP', sans-serif;
-  padding: 16px;
   margin: 0;
-  font-size: 16px;
-  background-color: #f9f9f9;
+  background: #f9f9f9;
+}
+.content {
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  padding: 16px;
 }
 label {
   display: block;
-  margin-top: 12px;
+  margin-top: 14px;
   font-weight: bold;
 }
 input, select {
   width: 100%;
-  padding: 6px;
+  padding: 8px;
   margin-top: 4px;
   box-sizing: border-box;
   font-size: 16px;
 }
 button {
-  margin-top: 16px;
+  margin-top: 20px;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background: #f26722;
-  color: #fff;
-  font-weight: bold;
+  color: white;
+  font-size: 16px;
   border: none;
   border-radius: 6px;
-  font-size: 16px;
+}
+.tab {
+  display: flex;
+  margin-bottom: 16px;
+}
+.tab-button {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+}
+.tab-button.active {
+  background: #eee;
+  font-weight: bold;
+}
+.note {
+  font-size: 12px;
+  color: #666;
+  margin: 4px 0 10px 0;
 }
 #result {
-  background: #fff;
+  background: #fff0f0;
+  border: 1px solid #f33;
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #ccc;
   margin-bottom: 16px;
 }

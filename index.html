@@ -5,109 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>カーポート柱寸法計算</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="https://raw.githubusercontent.com/as9source/Carport-Post-Calculation/main/icon.png" type="image/png">
+  <link rel="icon" href="https://raw.githubusercontent.com/as9source/Carport-Post-Calculation/main/icon.png">
   <meta name="theme-color" content="#f26722">
-  <link href="popup.css" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <img src="banner.png" style="width: 100%; max-height: 160px; object-fit: contain; margin-bottom: 16px;" alt="バナー" />
+  <img src="banner.png" style="width: 100%; max-height: 160px; object-fit: contain; margin-bottom: 16px;" />
 
-  <div style="text-align: right; font-size: 13px; margin-bottom: 8px;">
-    <a href="usage.html" target="_blank">▶ 使い方ガイド</a>
+  <div class="content">
+    <div style="text-align: right; font-size: 13px; margin-bottom: 8px;">
+      <a href="usage.html" target="_blank">▶ 使い方ガイド</a>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="tab">
+      <button id="tabAuto" class="tab-button active">製品選択モード</button>
+      <button id="tabManual" class="tab-button">手動入力モード</button>
+    </div>
+
+    <div id="autoSection" class="section">
+      <label>製品名</label>
+      <select id="typeSelector"></select>
+
+      <label>全長</label>
+      <select id="sizeSelector"></select>
+
+      <label>柱本数</label>
+      <select id="postCount"></select>
+      <p class="note">※横から見たときの本数です。<br>※奥行延長や奥行き連結の一部は対応していません。</p>
+    </div>
+
+    <div id="manualSection" class="section" style="display: none;">
+      <label>柱本数（手動）</label>
+      <select id="manualPostCount">
+        <option value="2">2本</option>
+        <option value="3">3本</option>
+        <option value="4">4本</option>
+      </select>
+      <p class="note">※横から見たときの本数です。<br>※奥行延長や奥行き連結の一部は対応していません。</p>
+    </div>
+
+    <label>L1（最初の柱間）</label>
+    <input type="number" id="l1">
+
+    <label>L2（中間の柱間）</label>
+    <input type="number" id="l2">
+
+    <label>L3（最後の柱間）</label>
+    <input type="number" id="l3">
+
+    <label>加工後の全長（L’）</label>
+    <input type="number" id="newLength">
+
+    <button id="calcBtn">計算</button>
+
+    <p style="text-align: right; font-size: 12px; color: #888;">バージョン：v1.3.6（完全復元＋整列済）</p>
   </div>
 
-  <div id="result"></div>
-
-  <div style="margin-bottom: 12px; display: flex; border-bottom: 2px solid #ccc;">
-    <div id="tabAuto" style="flex: 1; text-align: center; padding: 8px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-bottom: none;">製品選択モード</div>
-    <div id="tabManual" style="flex: 1; text-align: center; padding: 8px; cursor: pointer; border: 1px solid #ccc; border-left: none; border-bottom: none;">手動入力モード</div>
-  </div>
-
-  <div id="autoSection">
-    <label>製品名</label>
-    <select id="typeSelector"><option value="">--選択--</option></select>
-
-    <label>全長</label>
-    <select id="sizeSelector"><option value="">--選択--</option></select>
-
-    <label>柱本数</label>
-    <select id="postCount"><option value="">--選択--</option></select>
-    <p style="font-size: 12px; color: #666;">※横から見たときの本数です。<br>※奥行延長や奥行き連結の一部は対応していません。</p>
-  </div>
-
-  <div id="manualSection" style="display:none;">
-    <label>柱本数（手動）</label>
-    <select id="manualPostCount">
-      <option value="">--選択--</option>
-      <option value="2">2本</option>
-      <option value="3">3本</option>
-      <option value="4">4本</option>
-    </select>
-    <p style="font-size: 12px; color: #666;">※横から見たときの本数です。<br>※奥行延長や奥行き連結の一部は対応していません。</p>
-  </div>
-
-  <label>L1</label><input type="number" id="l1">
-  <label>L2</label><input type="number" id="l2">
-  <label>L3</label><input type="number" id="l3">
-  <label>加工後の全長（L’）</label><input type="number" id="newLength"><br>
-
-  <button id="calcBtn">計算</button>
-
-  <p style="text-align: right; font-size: 12px; color: #888;">バージョン：v1.3.6（完全復元＋バナー表示＋連携済）</p>
-
-  <script>
-    const tabAuto = document.getElementById("tabAuto");
-    const tabManual = document.getElementById("tabManual");
-
-    function setMode(mode) {
-      if (mode === "auto") {
-        document.getElementById("autoSection").style.display = "block";
-        document.getElementById("manualSection").style.display = "none";
-        tabAuto.style.background = "#eee";
-        tabManual.style.background = "#fff";
-      } else {
-        document.getElementById("autoSection").style.display = "none";
-        document.getElementById("manualSection").style.display = "block";
-        tabAuto.style.background = "#fff";
-        tabManual.style.background = "#eee";
-      }
-    }
-
-    tabAuto.onclick = () => setMode("auto");
-    tabManual.onclick = () => setMode("manual");
-    setMode("auto");
-
-    document.getElementById("calcBtn").onclick = () => {
-      const mode = document.getElementById("manualSection").style.display === "block" ? "manual" : "auto";
-      const postCount = parseInt(mode === "auto" ? document.getElementById("postCount").value : document.getElementById("manualPostCount").value) || 0;
-      const l1 = parseFloat(document.getElementById("l1").value) || 0;
-      const l2 = parseFloat(document.getElementById("l2").value) || 0;
-      const l3 = parseFloat(document.getElementById("l3").value) || 0;
-      const newLength = parseFloat(document.getElementById("newLength").value) || 0;
-
-      const resultDiv = document.getElementById("result");
-      if (!postCount || !newLength || (l1 + l2 + l3) === 0) {
-        resultDiv.innerHTML = "<p style='color:red;'>すべての値を正しく入力してください。</p>";
-        return;
-      }
-
-      const originalSum = l1 + l2 * (postCount - 1) + l3;
-      const ratio = newLength / originalSum;
-      const newL1 = Math.round(l1 * ratio);
-      const newL2 = Math.round(l2 * ratio);
-      const newL3 = Math.round(l3 * ratio);
-      const newSum = newL1 + newL2 * (postCount - 1) + newL3;
-
-      resultDiv.innerHTML = `
-        <div style="margin-bottom: 8px;">元の全長：${originalSum} mm　※全長寸法確認</div>
-        <div style="margin-bottom: 8px;">加工後の合計：${newSum} mm　<small style="color:#666;">※全長の最小寸法は、都度確認してください。</small></div>
-        <div style="border: 1px solid #f33; padding: 8px; border-radius: 6px;">
-          <strong>加工後のL1：</strong> ${newL1} mm<br>
-          <strong>加工後のL2（×${postCount - 1}）：</strong> ${newL2} mm<br>
-          <strong>加工後のL3：</strong> ${newL3} mm
-        </div>`;
-    };
-  </script>
+  <script src="popup.js"></script>
   <script src="sheet_loader.js"></script>
 </body>
 </html>
