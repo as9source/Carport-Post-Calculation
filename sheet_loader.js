@@ -19,21 +19,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const types = [...new Set(sheetData.map(d => d.type))];
-      typeSelector.innerHTML = '<option value="">--選択--</option>' + types.map(t => `<option value="${t}">${t}</option>`).join("");
+      typeSelector.innerHTML = '<option value="">-- 選択 --</option>' + types.map(t => `<option value="${t}">${t}</option>`).join("");
     });
 
   typeSelector.addEventListener("change", () => {
     const selectedType = typeSelector.value;
     const sizes = [...new Set(sheetData.filter(d => d.type === selectedType).map(d => d.size))];
-    sizeSelector.innerHTML = '<option value="">--選択--</option>' + sizes.map(s => `<option value="${s}">${s}</option>`).join("");
-    postCountSelector.innerHTML = '<option value="">--選択--</option>';
+    sizeSelector.innerHTML = '<option value="">-- 選択 --</option>' + sizes.map(s => `<option value="${s}">${s}</option>`).join("");
+    postCountSelector.innerHTML = '<option value="">-- 選択 --</option>';
   });
 
   sizeSelector.addEventListener("change", () => {
     const selectedType = typeSelector.value;
     const selectedSize = sizeSelector.value;
     const posts = [...new Set(sheetData.filter(d => d.type === selectedType && d.size === selectedSize).map(d => d.post))];
-    postCountSelector.innerHTML = '<option value="">--選択--</option>' + posts.map(p => `<option value="${p}">${p}本</option>`).join("");
+    postCountSelector.innerHTML = '<option value="">-- 選択 --</option>' + posts.map(p => `<option value="${p}">${p}本</option>`).join("");
   });
 
   postCountSelector.addEventListener("change", () => {
