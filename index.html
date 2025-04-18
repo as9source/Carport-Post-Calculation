@@ -3,13 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <title>カーポート柱寸法計算</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="https://raw.githubusercontent.com/as9source/Carport-Post-Calculation/main/icon.png" type="image/png">
   <meta name="theme-color" content="#f26722">
   <link href="popup.css" rel="stylesheet">
 </head>
 <body>
-  <img src="banner.png" style="width: 100%; max-height: 160px; object-fit: contain; margin-bottom: 16px;" alt="バナー" />
-  <p>※以下UIは簡易化された例です。</p>
+  <img src="banner.png" style="width: 100%; max-height: 160px; object-fit: contain; margin-bottom: 16px;" />
+
+  <div style="text-align: right; font-size: 13px; margin-bottom: 8px;">
+    <a href="usage.html" target="_blank">▶ 使い方ガイド</a>
+  </div>
+
+  <div id="result" style="margin-bottom: 16px;"></div>
+
+  <div id="modeTabs" style="margin-bottom: 12px; display: flex; border-bottom: 2px solid #ccc;">
+    <div id="tabAuto" style="flex: 1; text-align: center; padding: 8px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-bottom: none;">製品選択モード</div>
+    <div id="tabManual" style="flex: 1; text-align: center; padding: 8px; cursor: pointer; border: 1px solid #ccc; border-left: none; border-bottom: none;">手動入力モード</div>
+  </div>
+
+  <div id="autoSection">
+    <label>製品名</label>
+    <select id="typeSelector"><option value="">--選択--</option></select><br>
+
+    <label>全長</label>
+    <select id="sizeSelector"><option value="">--選択--</option></select><br>
+
+    <label>柱本数
+      <div style="font-size: 12px; color: #666; line-height: 1.4;">
+        ※横から見たときの本数です。<br>
+        ※奥行延長や奥行き連結の一部は対応していません。
+      </div>
+    </label>
+    <select id="postCount"><option value="">--選択--</option></select><br>
+  </div>
+
+  <div id="manualSection" style="display:none;">
+    <label>柱本数（手動）
+      <div style="font-size: 12px; color: #666; line-height: 1.4;">
+        ※横から見たときの本数です。<br>
+        ※奥行延長や奥行き連結の一部は対応していません。
+      </div>
+    </label>
+    <select id="manualPostCount">
+      <option value="">--選択--</option>
+      <option value="2">2本</option>
+      <option value="3">3本</option>
+      <option value="4">4本</option>
+    </select><br>
+  </div>
+
+  <label>L1</label>
+  <input type="number" id="l1"><br>
+  <label>L2</label>
+  <input type="number" id="l2"><br>
+  <label>L3</label>
+  <input type="number" id="l3"><br>
+  <label>加工後の全長（L’）</label>
+  <input type="number" id="newLength"><br><br>
+
+  <button id="calcBtn">計算</button>
+
+  <p style="text-align: right; font-size: 12px; color: #888;">
+    バージョン：v1.3.6（PWA対応＋バナー表示版）
+  </p>
+
+  <script src="popup.js"></script>
+  <script src="sheet_loader.js"></script>
 </body>
 </html>

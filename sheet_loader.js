@@ -1,1 +1,1 @@
-console.log('sheet loader active');
+console.log('sheet_loader.js loaded');
