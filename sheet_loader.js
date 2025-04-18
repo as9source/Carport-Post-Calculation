@@ -1,1 +1,1 @@
-console.log('sheet_loader.js active');
+// sheet_loader.js placeholder
