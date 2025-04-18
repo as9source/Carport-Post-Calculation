@@ -13,7 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(csv => {
       sheetData = csv.trim().split("\n").slice(1).map(row => {
         const [type, size, post, l1, l2, l3] = row.split(",");
-        return { type, size, post, l1, l2, l3 };
+        return {
+          type: type.trim(),
+          size: size.trim(),
+          post: post.trim(),
+          l1: parseFloat(l1),
+          l2: parseFloat(l2),
+          l3: parseFloat(l3)
+        };
       });
 
       const types = [...new Set(sheetData.map(d => d.type))];
@@ -30,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   sizeSelector.addEventListener("change", () => {
     const selectedType = typeSelector.value;
     const selectedSize = sizeSelector.value;
-    const posts = [...new Set(sheetData.filter(d => d.type === selectedType && d.size.toString() === selectedSize).map(d => d.post))];
+    const posts = [...new Set(sheetData.filter(d => d.type === selectedType && d.size === selectedSize).map(d => d.post))];
     postCountSelector.innerHTML = '<option value="">--選択--</option>' + posts.map(p => `<option value="${p}">${p}本</option>`).join("");
   });
 
@@ -38,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedType = typeSelector.value;
     const selectedSize = sizeSelector.value;
     const selectedPost = postCountSelector.value;
-    const entry = sheetData.find(d => d.type === selectedType && d.size.toString() === selectedSize && d.post === selectedPost);
+    const entry = sheetData.find(d => d.type === selectedType && d.size === selectedSize && d.post === selectedPost);
     if (entry) {
-      document.getElementById("l1").value = entry.l1;
-      document.getElementById("l2").value = entry.l2;
-      document.getElementById("l3").value = entry.l3;
+      document.getElementById("l1").value = entry.l1 || "";
+      document.getElementById("l2").value = entry.l2 || "";
+      document.getElementById("l3").value = entry.l3 || "";
     }
   });
 });
