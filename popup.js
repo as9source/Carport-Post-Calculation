@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (originalSum === 0 || newLength === 0 || postCount < 2) {
       resultDiv.innerHTML = "<p style='color:red;'>すべての数値を正しく入力してください。</p>";
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
@@ -59,5 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <strong>加工後のL2（×${l2Count}）：</strong>${resultL2} mm<br>
         <strong>加工後のL3：</strong>${resultL3} mm
       </div>`;
+    resultDiv.scrollIntoView({ behavior: 'smooth' });
   });
 });
