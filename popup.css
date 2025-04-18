@@ -36,6 +36,8 @@ button {
   margin-bottom: 16px;
 }
 .tab-button {
+  background-color: #eee;
+  color: #333;
   flex: 1;
   padding: 10px;
   font-size: 14px;
@@ -44,6 +46,9 @@ button {
   cursor: pointer;
 }
 .tab-button.active {
+  background-color: #f26722;
+  color: white;
+  font-weight: bold;
   background: #eee;
   font-weight: bold;
 }
