@@ -36,8 +36,12 @@ button {
   margin-bottom: 16px;
 }
 .tab-button {
-  background-color: #eee;
-  color: #333;
+  background-color: #fff;
+  color: #666;
+  border: 2px solid #ccc;
+  border-bottom: none;
+  font-weight: normal;
+}
   flex: 1;
   padding: 10px;
   font-size: 14px;
@@ -49,6 +53,10 @@ button {
   background-color: #f26722;
   color: white;
   font-weight: bold;
+  border: 2px solid #f26722;
+  border-bottom: none;
+  z-index: 2;
+}
   background: #eee;
   font-weight: bold;
 }
