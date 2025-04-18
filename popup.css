@@ -1,1 +1,35 @@
-body { font-family: sans-serif; padding: 16px; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 16px;
+  margin: 0;
+  font-size: 16px;
+  background-color: #f9f9f9;
+}
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+  box-sizing: border-box;
+}
+button {
+  margin-top: 16px;
+  width: 100%;
+  padding: 10px;
+  background: #f26722;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+}
+#result {
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
