@@ -1,1 +1,1 @@
-// popup.js placeholder
+console.log('popup loaded');
