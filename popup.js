@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const calculatedSum = resultL1 + resultL2 * l2Count + resultL3;
 
     resultDiv.innerHTML = `
-      <div><strong>元の全長：</strong>${originalSum} mm　※全長寸法確認</div>
+      <div><strong>元の全長：</strong>${originalSum} mm <small style='color:#666;'>※全長寸法確認</small></div>
       <div><strong>加工後の合計：</strong>${calculatedSum} mm　<small style="color:#666;">※全長の最小寸法は、都度確認してください。</small></div>
       <div style="margin-top:10px; padding:10px; border:1px solid #f33; border-radius:8px;">
         <strong>加工後のL1：</strong>${resultL1} mm<br>
