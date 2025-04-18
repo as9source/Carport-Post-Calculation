@@ -1,1 +1,41 @@
-body { font-family: sans-serif; padding: 16px; font-size: 16px; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 16px;
+  margin: 0;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+button {
+  margin-top: 16px;
+  width: 100%;
+  padding: 10px;
+  background: #f26722;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+}
+#result {
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+}
