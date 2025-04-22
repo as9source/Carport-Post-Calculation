@@ -25,7 +25,7 @@ button {
   margin-top: 20px;
   width: 100%;
   padding: 12px;
-  background: #f26722;
+  background: #009dde;
   color: white;
   font-size: 16px;
   border: none;
@@ -48,10 +48,10 @@ button {
   transition: all 0.3s ease;
 }
 .tab-button.active {
-  background-color: #f26722;
+  background-color: #009dde;
   color: white;
   font-weight: bold;
-  border: 3px solid #f26722;
+  border: 3px solid #009dde;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   opacity: 1;
   z-index: 2;

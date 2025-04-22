@@ -1,16 +1,16 @@
 
 {
   "name": "カーポート柱寸法計算",
-  "short_name": "柱ピッチ計算",
+  "short_name": "柱寸法計算",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#f26722",
+  "theme_color": "#009dde",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/as9source/Carport-Post-Calculation/main/icon.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ]
 }
