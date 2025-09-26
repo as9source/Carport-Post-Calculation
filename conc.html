@@ -1,0 +1,107 @@
+<!-- conc.html（index.html と同じフォルダに置く） -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>生コン量計算（四角穴・柱差引）</title>
+
+<!-- 既存の配色・余白ルールを共通化 -->
+<link rel="stylesheet" href="./popup.css">
+
+<!-- 最小限の補助だけ（色やフォントは popup.css に委ねる） -->
+<style>
+  .wrap { max-width: 640px; margin: 20px auto; }
+  .card { background:#fff; border:1px solid #ddd; border-radius:12px; padding:20px; }
+  .title { margin:0 0 10px; font-size:1.2rem; }
+  label { display:block; margin-top:12px; font-size:.95rem; font-weight:500; }
+  input { width:100%; padding:10px; margin-top:6px; border:1px solid #ddd; border-radius:8px; font-size:1rem; }
+  .btn { display:block; width:100%; padding:12px; border:none; border-radius:10px; font-weight:700; cursor:pointer; margin-top:14px; }
+  /* 既存に合わせてクラス名だけ用意。色は popup.css に委ねます */
+  .btn-primary {}
+  .btn-ghost { background:#fff; border:1px solid #ddd; }
+  .result { margin-top:16px; padding:12px; background:#eef4fb; border:1px solid #c6d8f0; border-radius:10px; line-height:1.6; }
+  .err { color:#c00; font-size:.9rem; margin-top:6px; display:none; }
+  @media (prefers-color-scheme: dark){
+    .card { background:#1e1e1e; border-color:#333; }
+    input { background:#111; color:#eee; border-color:#333; }
+    .btn-ghost { background:transparent; border-color:#444; color:#ddd; }
+    .result { background:#11223333; border-color:#335577; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1 class="title">生コン量計算（四角穴・柱差引）</h1>
+    <p>※ 入力はすべて <strong>mm</strong>、出力は m³ / L です。<br>
+       ※ 砕石を入れる場合は、その厚みを差し引いた<strong>穴高さ</strong>を入力してください。</p>
+
+    <!-- 穴（四角） -->
+    <label>穴の長辺 L（mm）
+      <input type="number" id="hole_l" value="300" min="1" inputmode="numeric">
+    </label>
+    <label>穴の短辺 W（mm）
+      <input type="number" id="hole_w" value="300" min="1" inputmode="numeric">
+    </label>
+    <label>穴高さ H（mm）
+      <input type="number" id="hole_h" value="600" min="1" inputmode="numeric">
+    </label>
+
+    <!-- 柱（角柱のみ） -->
+    <label>柱の一辺 a（mm）
+      <input type="number" id="post_a" value="100" min="1" inputmode="numeric">
+    </label>
+
+    <!-- 本数 -->
+    <label>柱の本数 N（本）
+      <input type="number" id="posts" value="2" min="1" step="1" inputmode="numeric">
+    </label>
+
+    <button class="btn btn-primary" id="calcBtn">計算する</button>
+    <button class="btn btn-ghost" id="backBtn">柱ピッチ計算に戻る</button>
+
+    <div id="out" class="result">ここに結果が表示されます。</div>
+    <div id="err" class="err"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const lEl = $("hole_l"), wEl = $("hole_w"), hEl = $("hole_h");
+  const aEl = $("post_a"), nEl = $("posts");
+  const out = $("out"), err = $("err");
+
+  function mm3_to_m3(v){ return v/1_000_000_000; }
+
+  function calc(){
+    err.style.display = "none";
+    const L = Number(lEl.value), W = Number(wEl.value), H = Number(hEl.value);
+    const a = Number(aEl.value), N = Number(nEl.value);
+    if (![L,W,H,a,N].every(v => Number.isFinite(v) && v > 0)) {
+      err.textContent = "入力値を確認してください（mmで正の数）。";
+      err.style.display = "block";
+      return;
+    }
+
+    const V_hole = L * W * H;       // 穴体積 mm³
+    const V_post = (a * a) * H;     // 柱体積 mm³（必ず差し引き）
+    const V1     = Math.max(0, V_hole - V_post);  // 正味 1穴 mm³
+
+    const m3_1 = mm3_to_m3(V1);
+    const L_1  = m3_1 * 1000;
+    const m3_T = m3_1 * N;
+    const L_T  = m3_T * 1000;
+
+    out.innerHTML =
+      `<strong>穴1つ分：</strong> ${m3_1.toFixed(3)} m³（約 ${Math.round(L_1)} L）<br>` +
+      `<strong>全部（${N}本）：</strong> ${m3_T.toFixed(3)} m³（約 ${Math.round(L_T)} L）`;
+  }
+
+  $("calcBtn").addEventListener("click", calc);
+  $("backBtn").addEventListener("click", ()=>{ location.href = "index.html"; });
+})();
+</script>
+</body>
+</html>
