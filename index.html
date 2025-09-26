@@ -8,12 +8,64 @@
   <link rel="icon" href="icon.png">
   <meta name="theme-color" content="#009dde">
   <link rel="stylesheet" href="popup.css">
+  <style>
+  :root{
+    /* ボタンの基調色（好みで変更OK） */
+    --accent:#2a5ca7;
+    --accent-pressed:#1e4680;
+    --accent-contrast:#ffffff;
+  }
+  /* 中央配置のコンテナ */
+  .cta-center{
+    display:flex;
+    justify-content:center;
+    margin:16px 0 20px;
+  }
+  /* ベースボタン（既存に無ければこれを使う） */
+  .btn{
+    display:inline-block;
+    padding:10px 16px;
+    border-radius:10px;
+    border:1px solid #d6d6d6;
+    background:#fff;
+    color:#222;
+    text-decoration:none;
+    font-weight:700;
+    line-height:1;
+    transition:transform .02s ease, box-shadow .2s ease;
+  }
+  .btn:hover{ box-shadow:0 2px 10px rgba(0,0,0,.06); transform: translateY(-1px); }
+  .btn:active{ transform: translateY(0); }
+  /* 主ボタン（色は変数で一括管理） */
+  .btn-primary{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:var(--accent-contrast);
+  }
+  .btn-primary:hover{
+    background:var(--accent-pressed);
+    border-color:var(--accent-pressed);
+  }
+  /* 目立つ大きさ */
+  .btn-lg{
+    font-size:1.12rem;
+    padding:14px 22px;
+    border-radius:12px;
+  }
+  /* スマホは横幅いっぱいに */
+  @media (max-width:480px){
+    .btn-lg{ width:100%; }
+  }
+</style>
 </head>
 <body>
   <img src="banner.png" style="width: 100%; max-height: 160px; object-fit: contain; margin-bottom: 16px;" />
 
-<a href="conc.html" class="btn btn-ghost">生コン量計算へ</a>
-  
+<!-- 生コン量計算ボタン（中央配置・視認性高め） -->
+<div class="cta-center">
+  <a href="./conc.html" class="btn btn-primary btn-lg">生コン量計算へ</a>
+</div>
+
   <div class="content">
     <div style="text-align: right; font-size: 13px; margin-bottom: 8px;">
       <a href="usage.html" target="_blank">▶ 使い方ガイド</a>
