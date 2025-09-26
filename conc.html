@@ -103,8 +103,8 @@
     const L_T  = Math.round(m3_T * 1000);
 
     out.innerHTML =
-      `<strong>穴1つ分：</strong> ${m3_1.toFixed(3)} m³（約 ${L_1} L）<br>` +
-      `<strong>全部（${N}本）：</strong> ${m3_T.toFixed(3)} m³（約 ${L_T} L)`;
+      `<strong>穴1つ分：</strong> ${m3_1.toFixed(3)} m³<br>` +
+      `<strong>全部（${N}本）：</strong> ${m3_T.toFixed(3)} m³;
   }
 
   $("calcBtn").addEventListener("click", calc);
@@ -113,5 +113,6 @@
 </script>
 </body>
 </html>
+
 
 
