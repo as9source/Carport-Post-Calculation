@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>生コン量計算（四角穴・柱差引 a×b）</title>
 
-<!-- 共通スタイル：色は popup.css の --accent を使用 -->
 <link rel="stylesheet" href="./popup.css" />
 
 <style>
@@ -15,6 +14,8 @@
   .title { margin:0 0 10px; font-size:1.2rem; }
   label { display:block; margin-top:12px; font-size:.95rem; font-weight:500; }
   input[type="number"] { width:100%; padding:10px; margin-top:6px; border:1px solid #ddd; border-radius:8px; font-size:1rem; }
+  .row { display:flex; align-items:center; gap:10px; }
+  .linker { display:flex; align-items:center; gap:6px; font-size:.9rem; color:#555; user-select:none; }
   .btn { display:inline-block; padding:12px 16px; border-radius:10px; border:1px solid #d6d6d6; background:#fff; color:#222;
          font-weight:700; cursor:pointer; text-decoration:none; }
   .btn + .btn { margin-left:8px; }
@@ -30,31 +31,40 @@
 <div class="wrap">
   <div class="card">
     <h1 class="title">生コン量計算</h1>
-    <p class="muted">単位は <span class="pill">mm 入力</span>、出力は <span class="pill">m³</span>。</p>
+    <p class="muted">単位は <span class="pill">mm で入力</span>、出力は <span class="pill">m³</span>です。</p>
 
     <!-- 穴（四角） -->
-    <label>穴の長辺 L（mm）
+    <label>穴の長辺 L（mm）</label>
+    <div class="row">
       <input type="number" id="hole_l" min="0" inputmode="numeric" placeholder="例: 500">
-    </label>
-    <label>穴の短辺 W（mm）
-      <input type="number" id="hole_w" min="0" inputmode="numeric" placeholder="例: 500">
-    </label>
-    <label>穴高さ H（mm）
-      <input type="number" id="hole_h" min="0" inputmode="numeric" placeholder="例: 500">
-    </label>
+      <label class="linker" title="LとWを同じ値にする（正方形が多い場合に便利）">
+        <input type="checkbox" id="linkLW" checked>
+        L=W を連動
+      </label>
+    </div>
+
+    <label>穴の短辺 W（mm）<span class="muted">（連動ONなら自動入力／長方形はWを書き換え）</span></label>
+    <input type="number" id="hole_w" min="0" inputmode="numeric" placeholder="例: 500">
+
+    <label>穴高さ H（mm）</label>
+    <input type="number" id="hole_h" min="0" inputmode="numeric" placeholder="例: 550">
 
     <!-- 柱（長方形 a×b） -->
-    <label>柱の一辺 a（mm）
+    <label>柱の一辺 a（mm）</label>
+    <div class="row">
       <input type="number" id="post_a" min="0" inputmode="numeric" placeholder="例: 125">
-    </label>
-    <label>柱のもう一辺 b（mm）<span class="muted">（初期は a と同じ。長方形は上書きOK）</span>
-      <input type="number" id="post_b" min="0" inputmode="numeric" data-autofill="1" placeholder="例: 125">
-    </label>
+      <label class="linker" title="aとbを同じ値にする（角柱が多い場合に便利）">
+        <input type="checkbox" id="linkAB" checked>
+        a=b を連動
+      </label>
+    </div>
+
+    <label>柱のもう一辺 b（mm）<span class="muted">（連動ONなら自動入力／長方形はbを書き換え）</span></label>
+    <input type="number" id="post_b" min="0" inputmode="numeric" placeholder="例: 125">
 
     <!-- 本数 -->
-    <label>柱の本数 N（本）
-      <input type="number" id="posts" min="0" step="1" inputmode="numeric" placeholder="例: 4">
-    </label>
+    <label>柱の本数 N（本）</label>
+    <input type="number" id="posts" min="0" step="1" inputmode="numeric" placeholder="例: 4">
 
     <div class="btn-row">
       <button type="button" class="btn btn-primary" id="calcBtn">計算する</button>
@@ -70,48 +80,59 @@
 
 <script>
 (function(){
-  // 安全に要素取得
-  function $(id){ return document.getElementById(id); }
-  const lEl = $("hole_l"), wEl = $("hole_w"), hEl = $("hole_h");
-  const aEl = $("post_a"), bEl = $("post_b"), nEl = $("posts");
-  const out = $("out"), backBtn = $("backBtn"), calcBtn = $("calcBtn");
+  // 要素取得
+  const lEl = document.getElementById("hole_l");
+  const wEl = document.getElementById("hole_w");
+  const hEl = document.getElementById("hole_h");
+  const aEl = document.getElementById("post_a");
+  const bEl = document.getElementById("post_b");
+  const nEl = document.getElementById("posts");
+  const linkLW = document.getElementById("linkLW");
+  const linkAB = document.getElementById("linkAB");
+  const out = document.getElementById("out");
 
-  if(!lEl || !wEl || !hEl || !aEl || !bEl || !nEl || !out || !backBtn || !calcBtn){
-    // 必須要素が無ければ終了（静かに失敗しない）
-    console.error("必須要素が見つかりません。ID を確認してください。");
-    return;
-  }
-
-  // 数字化ヘルパ：空欄やNaNは0扱い
-  function toNum(el){
+  // 数値変換（空欄やNaNは0）
+  const toNum = el => {
     const v = Number(el.value);
     return (Number.isFinite(v) && v >= 0) ? v : 0;
-  }
-  function mm3_to_m3(v){ return v / 1_000_000_000; }
+  };
+  const mm3_to_m3 = v => v / 1_000_000_000;
 
-  // --- a→b 自動コピー（b を触るまで連動） ---
-  let bEdited = false;
+  // --- L→W 連動 ---
+  function syncLW(){
+    if(linkLW.checked){
+      wEl.value = lEl.value;
+    }
+  }
+  lEl.addEventListener("input",  syncLW);
+  lEl.addEventListener("change", syncLW);
+  linkLW.addEventListener("change", ()=>{
+    if(linkLW.checked){ syncLW(); }
+  });
+
+  // --- a→b 連動 ---
   function syncAB(){
-    if(!bEdited || bEl.dataset.autofill === "1"){
+    if(linkAB.checked){
       bEl.value = aEl.value;
-      bEl.dataset.autofill = "1";
     }
   }
   aEl.addEventListener("input",  syncAB);
-  aEl.addEventListener("keyup",  syncAB);
   aEl.addEventListener("change", syncAB);
-
-  bEl.addEventListener("input",  ()=>{ bEdited = true; bEl.dataset.autofill = "0"; });
-  bEl.addEventListener("keyup",  ()=>{ bEdited = true; bEl.dataset.autofill = "0"; });
-  bEl.addEventListener("change", ()=>{ bEdited = true; bEl.dataset.autofill = "0"; });
+  linkAB.addEventListener("change", ()=>{
+    if(linkAB.checked){ syncAB(); }
+  });
 
   // 計算
   function calc(){
+    // 連動ONで、かつ相手が空欄なら計算前に補完
+    if(linkLW.checked && !wEl.value){ wEl.value = lEl.value; }
+    if(linkAB.checked && !bEl.value){ bEl.value = aEl.value; }
+
     const L = toNum(lEl), W = toNum(wEl), H = toNum(hEl);
     const a = toNum(aEl), b = toNum(bEl), N = toNum(nEl);
 
-    const V_hole = L * W * H;           // mm³
-    const V_post = a * b * H;           // mm³（必ず差し引き）
+    const V_hole = L * W * H;  // mm³
+    const V_post = a * b * H;  // mm³
     const V1     = Math.max(0, V_hole - V_post);
 
     const m3_1 = mm3_to_m3(V1);
@@ -122,13 +143,9 @@
       `<strong>全部（${N}本）：</strong> ${m3_T.toFixed(3)} m³`;
   }
 
-  calcBtn.addEventListener("click", calc);
-  backBtn.addEventListener("click", ()=>{ location.href = "index.html"; });
-
-  // 初期：a入力済みなら b に同期（リロード直後の手入力に対応）
-  if(aEl.value && !bEl.value){ syncAB(); }
+  document.getElementById("calcBtn").addEventListener("click", calc);
+  document.getElementById("backBtn").addEventListener("click", ()=>{ location.href = "index.html"; });
 })();
 </script>
 </body>
 </html>
-
