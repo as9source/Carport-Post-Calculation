@@ -1,3 +1,74 @@
+<!-- conc.html（index.html と同じフォルダに置く） -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>生コン量計算（四角穴・柱差引 a×b）</title>
+
+<link rel="stylesheet" href="./popup.css" />
+
+<style>
+  .wrap { max-width: 640px; margin: 20px auto; }
+  .card { background:#fff; border:1px solid #ddd; border-radius:12px; padding:20px; }
+  .title { margin:0 0 10px; font-size:1.2rem; }
+  label { display:block; margin-top:12px; font-size:.95rem; font-weight:500; }
+  input[type="number"] {
+    width:100%; padding:10px; margin-top:6px;
+    border:1px solid #ddd; border-radius:8px; font-size:1rem;
+  }
+  .btn { display:inline-block; padding:12px 16px; border-radius:10px; border:1px solid #d6d6d6; background:#fff; color:#222;
+         font-weight:700; cursor:pointer; text-decoration:none; }
+  .btn + .btn { margin-left:8px; }
+  .btn-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .btn-primary{ background:var(--accent); border-color:var(--accent); color:var(--accent-contrast); }
+  .btn-primary:hover{ background:var(--accent-pressed); border-color:var(--accent-pressed); }
+  .result { margin-top:16px; padding:12px; background:#eef4fb; border:1px solid #c6d8f0; border-radius:10px; line-height:1.6; }
+  .muted { color:#666; font-size:.85rem; margin-top:4px; }
+  .pill { display:inline-block; padding:2px 10px; border-radius:999px; background:#f2f2f2; border:1px solid #e5e5e5; font-size:.8rem; color:#555; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1 class="title">生コン量計算</h1>
+    <p class="muted">単位は <span class="pill">mm 入力</span>、出力は <span class="pill">m³</span>。</p>
+
+    <!-- 穴（四角） -->
+    <label>穴の長辺 L（mm）</label>
+    <input type="number" id="hole_l" min="0" inputmode="numeric" placeholder="例: 500">
+
+    <label>穴の短辺 W（mm）</label>
+    <input type="number" id="hole_w" min="0" inputmode="numeric" placeholder="例: 500">
+    <p class="muted">※正方形が多いため、Lと同じ値が自動入力されます。長方形の場合は書き換えてください。</p>
+
+    <label>穴高さ H（mm）</label>
+    <input type="number" id="hole_h" min="0" inputmode="numeric" placeholder="例: 550">
+
+    <!-- 柱（長方形 a×b） -->
+    <label>柱の一辺 a（mm）</label>
+    <input type="number" id="post_a" min="0" inputmode="numeric" placeholder="例: 125">
+
+    <label>柱のもう一辺 b（mm）</label>
+    <input type="number" id="post_b" min="0" inputmode="numeric" placeholder="例: 125">
+    <p class="muted">※角柱が多いため、aと同じ値が自動入力されます。長方形の場合は書き換えてください。</p>
+
+    <!-- 本数 -->
+    <label>柱の本数 N（本）</label>
+    <input type="number" id="posts" min="0" step="1" inputmode="numeric" placeholder="例: 2">
+
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" id="calcBtn">計算する</button>
+      <button type="button" class="btn" id="backBtn">柱ピッチ計算に戻る</button>
+    </div>
+
+    <div id="out" class="result" aria-live="polite">
+      <strong>穴1つ分：</strong> 0.000 m³<br>
+      <strong>全部（0本）：</strong> 0.000 m³
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const lEl = document.getElementById("hole_l");
@@ -14,7 +85,7 @@
   const toNum = el => { const v = Number(el.value); return (Number.isFinite(v) && v >= 0) ? v : 0; };
   const mm3_to_m3 = v => v / 1_000_000_000;
 
-  // --- L→W（手動書き換えされるまで常に同期） ---
+  // --- L→W（Wを手動編集するまで常に同期） ---
   lEl.addEventListener("input", ()=>{
     if(!wManual){
       wEl.value = lEl.value;
@@ -22,7 +93,7 @@
   });
   wEl.addEventListener("input", ()=>{ wManual = true; });
 
-  // --- a→b（手動書き換えされるまで常に同期） ---
+  // --- a→b（bを手動編集するまで常に同期） ---
   aEl.addEventListener("input", ()=>{
     if(!bManual){
       bEl.value = aEl.value;
@@ -30,13 +101,14 @@
   });
   bEl.addEventListener("input", ()=>{ bManual = true; });
 
+  // --- 計算処理 ---
   function calc(){
     const L = toNum(lEl), W = toNum(wEl), H = toNum(hEl);
     const a = toNum(aEl), b = toNum(bEl), N = toNum(nEl);
 
-    const V_hole = L * W * H;
-    const V_post = a * b * H;
-    const V1 = Math.max(0, V_hole - V_post);
+    const V_hole = L * W * H;   // 穴体積
+    const V_post = a * b * H;   // 柱体積
+    const V1 = Math.max(0, V_hole - V_post); // 柱差引き
 
     const m3_1 = mm3_to_m3(V1);
     const m3_T = m3_1 * N;
@@ -50,3 +122,5 @@
   document.getElementById("backBtn").addEventListener("click", ()=>{ location.href = "index.html"; });
 })();
 </script>
+</body>
+</html>
