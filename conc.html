@@ -1,4 +1,4 @@
-<!-- conc.html（index.html と同じフォルダに置く） -->
+<!-- conc.html（index.html と同じフォルダ） -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,15 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>生コン量計算（四角穴・柱差引 a×b）</title>
 
-<link rel="stylesheet" href="./popup.css">
+<!-- 共通スタイル：色は popup.css の --accent を使用 -->
+<link rel="stylesheet" href="./popup.css" />
 
 <style>
   .wrap { max-width: 640px; margin: 20px auto; }
   .card { background:#fff; border:1px solid #ddd; border-radius:12px; padding:20px; }
   .title { margin:0 0 10px; font-size:1.2rem; }
   label { display:block; margin-top:12px; font-size:.95rem; font-weight:500; }
-  input { width:100%; padding:10px; margin-top:6px; border:1px solid #ddd; border-radius:8px; font-size:1rem; }
-  .btn { display:inline-block; padding:12px 16px; border-radius:10px; border:1px solid #d6d6d6; background:#fff; color:#222; font-weight:700; cursor:pointer; text-decoration:none; }
+  input[type="number"] { width:100%; padding:10px; margin-top:6px; border:1px solid #ddd; border-radius:8px; font-size:1rem; }
+  .btn { display:inline-block; padding:12px 16px; border-radius:10px; border:1px solid #d6d6d6; background:#fff; color:#222;
+         font-weight:700; cursor:pointer; text-decoration:none; }
   .btn + .btn { margin-left:8px; }
   .btn-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
   .btn-primary{ background:var(--accent); border-color:var(--accent); color:var(--accent-contrast); }
@@ -45,7 +47,7 @@
     <label>柱の一辺 a（mm）
       <input type="number" id="post_a" min="0" inputmode="numeric" placeholder="例: 100">
     </label>
-    <label>柱のもう一辺 b（mm）<span class="muted">（初期は a と同じ。長方形は書き換えOK）</span>
+    <label>柱のもう一辺 b（mm）<span class="muted">（初期は a と同じ。長方形は上書きOK）</span>
       <input type="number" id="post_b" min="0" inputmode="numeric" data-autofill="1" placeholder="例: 100">
     </label>
 
@@ -55,4 +57,77 @@
     </label>
 
     <div class="btn-row">
-      <button class="btn btn-primary" id="calcBtn">計算す
+      <button type="button" class="btn btn-primary" id="calcBtn">計算する</button>
+      <button type="button" class="btn" id="backBtn">柱ピッチ計算に戻る</button>
+    </div>
+
+    <div id="out" class="result" aria-live="polite">
+      <strong>穴1つ分：</strong> 0.000 m³<br>
+      <strong>全部（0本）：</strong> 0.000 m³
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // 安全に要素取得
+  function $(id){ return document.getElementById(id); }
+  const lEl = $("hole_l"), wEl = $("hole_w"), hEl = $("hole_h");
+  const aEl = $("post_a"), bEl = $("post_b"), nEl = $("posts");
+  const out = $("out"), backBtn = $("backBtn"), calcBtn = $("calcBtn");
+
+  if(!lEl || !wEl || !hEl || !aEl || !bEl || !nEl || !out || !backBtn || !calcBtn){
+    // 必須要素が無ければ終了（静かに失敗しない）
+    console.error("必須要素が見つかりません。ID を確認してください。");
+    return;
+  }
+
+  // 数字化ヘルパ：空欄やNaNは0扱い
+  function toNum(el){
+    const v = Number(el.value);
+    return (Number.isFinite(v) && v >= 0) ? v : 0;
+  }
+  function mm3_to_m3(v){ return v / 1_000_000_000; }
+
+  // --- a→b 自動コピー（b を触るまで連動） ---
+  let bEdited = false;
+  function syncAB(){
+    if(!bEdited || bEl.dataset.autofill === "1"){
+      bEl.value = aEl.value;
+      bEl.dataset.autofill = "1";
+    }
+  }
+  aEl.addEventListener("input",  syncAB);
+  aEl.addEventListener("keyup",  syncAB);
+  aEl.addEventListener("change", syncAB);
+
+  bEl.addEventListener("input",  ()=>{ bEdited = true; bEl.dataset.autofill = "0"; });
+  bEl.addEventListener("keyup",  ()=>{ bEdited = true; bEl.dataset.autofill = "0"; });
+  bEl.addEventListener("change", ()=>{ bEdited = true; bEl.dataset.autofill = "0"; });
+
+  // 計算
+  function calc(){
+    const L = toNum(lEl), W = toNum(wEl), H = toNum(hEl);
+    const a = toNum(aEl), b = toNum(bEl), N = toNum(nEl);
+
+    const V_hole = L * W * H;           // mm³
+    const V_post = a * b * H;           // mm³（必ず差し引き）
+    const V1     = Math.max(0, V_hole - V_post);
+
+    const m3_1 = mm3_to_m3(V1);
+    const m3_T = m3_1 * N;
+
+    out.innerHTML =
+      `<strong>穴1つ分：</strong> ${m3_1.toFixed(3)} m³<br>` +
+      `<strong>全部（${N}本）：</strong> ${m3_T.toFixed(3)} m³`;
+  }
+
+  calcBtn.addEventListener("click", calc);
+  backBtn.addEventListener("click", ()=>{ location.href = "index.html"; });
+
+  // 初期：a入力済みなら b に同期（リロード直後の手入力に対応）
+  if(aEl.value && !bEl.value){ syncAB(); }
+})();
+</script>
+</body>
+</html>
