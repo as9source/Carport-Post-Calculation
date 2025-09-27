@@ -14,8 +14,7 @@
   .title { margin:0 0 10px; font-size:1.2rem; }
   label { display:block; margin-top:12px; font-size:.95rem; font-weight:500; }
   input[type="number"] { width:100%; padding:10px; margin-top:6px; border:1px solid #ddd; border-radius:8px; font-size:1rem; }
-  .row { display:flex; align-items:center; gap:10px; }
-  .linker { display:flex; align-items:center; gap:6px; font-size:.9rem; color:#555; user-select:none; }
+  .linker { display:block; margin-top:4px; font-size:.9rem; color:#555; user-select:none; }
   .btn { display:inline-block; padding:12px 16px; border-radius:10px; border:1px solid #d6d6d6; background:#fff; color:#222;
          font-weight:700; cursor:pointer; text-decoration:none; }
   .btn + .btn { margin-left:8px; }
@@ -31,17 +30,15 @@
 <div class="wrap">
   <div class="card">
     <h1 class="title">生コン量計算</h1>
-    <p class="muted">単位は <span class="pill">mm で入力</span>、出力は <span class="pill">m³</span>です。</p>
+    <p class="muted">単位は <span class="pill">mm 入力</span>、出力は <span class="pill">m³</span>。</p>
 
     <!-- 穴（四角） -->
     <label>穴の長辺 L（mm）</label>
-    <div class="row">
-      <input type="number" id="hole_l" min="0" inputmode="numeric" placeholder="例: 500">
-      <label class="linker" title="LとWを同じ値にする（正方形が多い場合に便利）">
-        <input type="checkbox" id="linkLW" checked>
-        L=W を連動
-      </label>
-    </div>
+    <input type="number" id="hole_l" min="0" inputmode="numeric" placeholder="例: 500">
+    <label class="linker" title="LとWを同じ値にする（正方形が多い場合に便利）">
+      <input type="checkbox" id="linkLW" checked>
+      L=W を連動
+    </label>
 
     <label>穴の短辺 W（mm）<span class="muted">（連動ONなら自動入力／長方形はWを書き換え）</span></label>
     <input type="number" id="hole_w" min="0" inputmode="numeric" placeholder="例: 500">
@@ -51,20 +48,18 @@
 
     <!-- 柱（長方形 a×b） -->
     <label>柱の一辺 a（mm）</label>
-    <div class="row">
-      <input type="number" id="post_a" min="0" inputmode="numeric" placeholder="例: 125">
-      <label class="linker" title="aとbを同じ値にする（角柱が多い場合に便利）">
-        <input type="checkbox" id="linkAB" checked>
-        a=b を連動
-      </label>
-    </div>
+    <input type="number" id="post_a" min="0" inputmode="numeric" placeholder="例: 125">
+    <label class="linker" title="aとbを同じ値にする（角柱が多い場合に便利）">
+      <input type="checkbox" id="linkAB" checked>
+      a=b を連動
+    </label>
 
     <label>柱のもう一辺 b（mm）<span class="muted">（連動ONなら自動入力／長方形はbを書き換え）</span></label>
     <input type="number" id="post_b" min="0" inputmode="numeric" placeholder="例: 125">
 
     <!-- 本数 -->
     <label>柱の本数 N（本）</label>
-    <input type="number" id="posts" min="0" step="1" inputmode="numeric" placeholder="例: 4">
+    <input type="number" id="posts" min="0" step="1" inputmode="numeric" placeholder="例: 2">
 
     <div class="btn-row">
       <button type="button" class="btn btn-primary" id="calcBtn">計算する</button>
@@ -80,7 +75,6 @@
 
 <script>
 (function(){
-  // 要素取得
   const lEl = document.getElementById("hole_l");
   const wEl = document.getElementById("hole_w");
   const hEl = document.getElementById("hole_h");
@@ -91,7 +85,6 @@
   const linkAB = document.getElementById("linkAB");
   const out = document.getElementById("out");
 
-  // 数値変換（空欄やNaNは0）
   const toNum = el => {
     const v = Number(el.value);
     return (Number.isFinite(v) && v >= 0) ? v : 0;
@@ -104,11 +97,9 @@
       wEl.value = lEl.value;
     }
   }
-  lEl.addEventListener("input",  syncLW);
+  lEl.addEventListener("input", syncLW);
   lEl.addEventListener("change", syncLW);
-  linkLW.addEventListener("change", ()=>{
-    if(linkLW.checked){ syncLW(); }
-  });
+  linkLW.addEventListener("change", ()=>{ if(linkLW.checked){ syncLW(); } });
 
   // --- a→b 連動 ---
   function syncAB(){
@@ -116,24 +107,21 @@
       bEl.value = aEl.value;
     }
   }
-  aEl.addEventListener("input",  syncAB);
+  aEl.addEventListener("input", syncAB);
   aEl.addEventListener("change", syncAB);
-  linkAB.addEventListener("change", ()=>{
-    if(linkAB.checked){ syncAB(); }
-  });
+  linkAB.addEventListener("change", ()=>{ if(linkAB.checked){ syncAB(); } });
 
   // 計算
   function calc(){
-    // 連動ONで、かつ相手が空欄なら計算前に補完
     if(linkLW.checked && !wEl.value){ wEl.value = lEl.value; }
     if(linkAB.checked && !bEl.value){ bEl.value = aEl.value; }
 
     const L = toNum(lEl), W = toNum(wEl), H = toNum(hEl);
     const a = toNum(aEl), b = toNum(bEl), N = toNum(nEl);
 
-    const V_hole = L * W * H;  // mm³
-    const V_post = a * b * H;  // mm³
-    const V1     = Math.max(0, V_hole - V_post);
+    const V_hole = L * W * H;
+    const V_post = a * b * H;
+    const V1 = Math.max(0, V_hole - V_post);
 
     const m3_1 = mm3_to_m3(V1);
     const m3_T = m3_1 * N;
