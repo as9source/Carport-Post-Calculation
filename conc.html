@@ -32,89 +32,27 @@
 
     <!-- 穴（四角） -->
     <label>穴の長辺 L（mm）
-      <input type="number" id="hole_l" min="0" inputmode="numeric">
+      <input type="number" id="hole_l" min="0" inputmode="numeric" placeholder="例: 300">
     </label>
     <label>穴の短辺 W（mm）
-      <input type="number" id="hole_w" min="0" inputmode="numeric">
+      <input type="number" id="hole_w" min="0" inputmode="numeric" placeholder="例: 300">
     </label>
     <label>穴高さ H（mm）
-      <input type="number" id="hole_h" min="0" inputmode="numeric">
+      <input type="number" id="hole_h" min="0" inputmode="numeric" placeholder="例: 600">
     </label>
 
     <!-- 柱（長方形 a×b） -->
     <label>柱の一辺 a（mm）
-      <input type="number" id="post_a" min="0" inputmode="numeric">
+      <input type="number" id="post_a" min="0" inputmode="numeric" placeholder="例: 100">
     </label>
     <label>柱のもう一辺 b（mm）<span class="muted">（初期は a と同じ。長方形は書き換えOK）</span>
-      <input type="number" id="post_b" min="0" inputmode="numeric" data-autofill="1">
+      <input type="number" id="post_b" min="0" inputmode="numeric" data-autofill="1" placeholder="例: 100">
     </label>
 
     <!-- 本数 -->
     <label>柱の本数 N（本）
-      <input type="number" id="posts" min="0" step="1" inputmode="numeric">
+      <input type="number" id="posts" min="0" step="1" inputmode="numeric" placeholder="例: 2">
     </label>
 
     <div class="btn-row">
-      <button class="btn btn-primary" id="calcBtn">計算する</button>
-      <button class="btn" id="backBtn">柱ピッチ計算に戻る</button>
-    </div>
-
-    <div id="out" class="result">
-      <strong>穴1つ分：</strong> 0.000 m³（約 0 L）<br>
-      <strong>全部（0本）：</strong> 0.000 m³（約 0 L）
-    </div>
-  </div>
-</div>
-
-<script>
-(function(){
-  const $ = id => document.getElementById(id);
-  const lEl = $("hole_l"), wEl = $("hole_w"), hEl = $("hole_h");
-  const aEl = $("post_a"), bEl = $("post_b"), nEl = $("posts");
-  const out = $("out");
-
-  // --- a→b 自動コピー（b を触るまで連動） ---
-  let bEdited = false;
-  aEl.addEventListener("input", ()=>{
-    if(!bEdited || bEl.dataset.autofill === "1"){
-      bEl.value = aEl.value;
-      bEl.dataset.autofill = "1";
-    }
-  });
-  bEl.addEventListener("input", ()=>{
-    bEdited = true;
-    bEl.dataset.autofill = "0"; // ユーザーが上書きしたら連動解除
-  });
-
-  function mm3_to_m3(v){ return v/1_000_000_000; }
-  function toNum(el){ const v = Number(el.value); return Number.isFinite(v) ? v : 0; }
-
-  function calc(){
-    const L = toNum(lEl), W = toNum(wEl), H = toNum(hEl);
-    const a = toNum(aEl), b = toNum(bEl), N = toNum(nEl);
-
-    const V_hole = L * W * H;
-    const V_post = a * b * H;
-    const V1     = Math.max(0, V_hole - V_post);
-
-    const m3_1 = mm3_to_m3(V1);
-    const L_1  = Math.round(m3_1 * 1000);
-    const m3_T = m3_1 * N;
-    const L_T  = Math.round(m3_T * 1000);
-
-    out.innerHTML =
-      `<strong>穴1つ分：</strong> ${m3_1.toFixed(3)} m³<br>` +
-      `<strong>全部（${N}本）：</strong> ${m3_T.toFixed(3)} m³;
-  }
-
-  $("calcBtn").addEventListener("click", calc);
-  $("backBtn").addEventListener("click", ()=>{ location.href = "index.html"; });
-})();
-</script>
-</body>
-</html>
-
-
-
-
-
+      <button class="btn btn-primary" id="calcBtn">計算す
