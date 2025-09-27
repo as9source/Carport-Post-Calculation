@@ -13,8 +13,25 @@
   .card { background:#fff; border:1px solid #ddd; border-radius:12px; padding:20px; }
   .title { margin:0 0 10px; font-size:1.2rem; }
   label { display:block; margin-top:12px; font-size:.95rem; font-weight:500; }
-  input[type="number"] { width:100%; padding:10px; margin-top:6px; border:1px solid #ddd; border-radius:8px; font-size:1rem; }
-  .linker { display:block; margin-top:4px; font-size:.9rem; color:#555; user-select:none; }
+  input[type="number"] {
+    width:100%; padding:10px; margin-top:6px;
+    border:1px solid #ddd; border-radius:8px; font-size:1rem;
+  }
+
+  /* ←ここを修正：横並びにして自然に表示 */
+  .linker {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:6px;
+    font-size:.9rem;
+    color:#555;
+    user-select:none;
+  }
+  .linker input[type="checkbox"] {
+    margin:0;
+  }
+
   .btn { display:inline-block; padding:12px 16px; border-radius:10px; border:1px solid #d6d6d6; background:#fff; color:#222;
          font-weight:700; cursor:pointer; text-decoration:none; }
   .btn + .btn { margin-left:8px; }
@@ -30,7 +47,7 @@
 <div class="wrap">
   <div class="card">
     <h1 class="title">生コン量計算</h1>
-    <p class="muted">単位は <span class="pill">mm で入力</span>して下さい、出力は <span class="pill">m³</span>です。</p>
+    <p class="muted">単位は <span class="pill">mm 入力</span>してください、出力は <span class="pill">m³</span>です。</p>
 
     <!-- 穴（四角） -->
     <label>穴の長辺 L（mm）</label>
@@ -44,7 +61,7 @@
     <input type="number" id="hole_w" min="0" inputmode="numeric" placeholder="例: 500">
 
     <label>穴高さ H（mm）</label>
-    <input type="number" id="hole_h" min="0" inputmode="numeric" placeholder="例: 550">
+    <input type="number" id="hole_h" min="0" inputmode="numeric" placeholder="例: 500">
 
     <!-- 柱（長方形 a×b） -->
     <label>柱の一辺 a（mm）</label>
@@ -137,4 +154,3 @@
 </script>
 </body>
 </html>
-
