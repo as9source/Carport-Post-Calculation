@@ -18,19 +18,17 @@
     border:1px solid #ddd; border-radius:8px; font-size:1rem;
   }
 
-  /* チェックボックス＋文字を左寄せで横並び */
+  /* 縦並び用スタイル */
   .linker {
-    display:flex;
-    align-items:center;
-    justify-content:flex-start; /* 左寄せ */
+    display:block;
     margin-top:6px;
     font-size:.9rem;
     color:#555;
     user-select:none;
   }
   .linker input[type="checkbox"] {
-    margin:0;
-    margin-right:4px; /* チェックと文字の間隔を最小限に */
+    display:block;
+    margin:0 0 4px 0; /* チェックを上、文字を下に */
   }
 
   .btn { display:inline-block; padding:12px 16px; border-radius:10px; border:1px solid #d6d6d6; background:#fff; color:#222;
@@ -54,7 +52,8 @@
     <label>穴の長辺 L（mm）</label>
     <input type="number" id="hole_l" min="0" inputmode="numeric" placeholder="例: 500">
     <label class="linker" title="LとWを同じ値にする（正方形が多い場合に便利）">
-      <input type="checkbox" id="linkLW" checked> L=W を連動
+      <input type="checkbox" id="linkLW" checked>
+      L=W を連動
     </label>
 
     <label>穴の短辺 W（mm）<span class="muted">（連動ONなら自動入力／長方形はWを書き換え）</span></label>
@@ -67,7 +66,8 @@
     <label>柱の一辺 a（mm）</label>
     <input type="number" id="post_a" min="0" inputmode="numeric" placeholder="例: 125">
     <label class="linker" title="aとbを同じ値にする（角柱が多い場合に便利）">
-      <input type="checkbox" id="linkAB" checked> a=b を連動
+      <input type="checkbox" id="linkAB" checked>
+      a=b を連動
     </label>
 
     <label>柱のもう一辺 b（mm）<span class="muted">（連動ONなら自動入力／長方形はbを書き換え）</span></label>
