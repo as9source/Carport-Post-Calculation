@@ -1,0 +1,33 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f7ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="exGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad512)"/>
+  
+  <!-- 大きな丸い背景（ブルー系） -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#exGrad512)" stroke-width="2" opacity="0.15"/>
+  <circle cx="256" cy="256" r="130" fill="none" stroke="url(#exGrad512)" stroke-width="2" opacity="0.2"/>
+  
+  <!-- 左上：上向き矢印 -->
+  <line x1="120" y1="190" x2="120" y2="100" stroke="url(#exGrad512)" stroke-width="14" stroke-linecap="round"/>
+  <polygon points="120,70 105,110 135,110" fill="url(#exGrad512)"/>
+  
+  <!-- 中央：EX（大きく、シンプル） -->
+  <text x="256" y="280" font-size="140" font-weight="800" fill="url(#exGrad512)" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" letter-spacing="2">EX</text>
+  
+  <!-- 右上：ダイアゴナルライン -->
+  <line x1="360" y1="100" x2="410" y2="50" stroke="url(#exGrad512)" stroke-width="14" stroke-linecap="round" opacity="0.8"/>
+  <line x1="345" y1="125" x2="395" y2="75" stroke="url(#exGrad512)" stroke-width="10" stroke-linecap="round" opacity="0.6"/>
+  
+  <!-- 下部：流動的なラインアクセント -->
+  <path d="M 100 380 Q 150 395 220 380 T 400 380 T 480 380" stroke="url(#exGrad512)" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.5"/>
+</svg>
