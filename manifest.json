@@ -1,52 +1,16 @@
+
 {
-  "name": "エクステリア計算ツール",
-  "short_name": "計算ツール",
-  "description": "エクステリア工事計算を効率化するツール集 - カーポート柱寸法、生コン量、テラス屋根干渉チェック",
+  "name": "カーポート柱寸法計算",
+  "short_name": "柱寸法計算",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
   "background_color": "#ffffff",
-  "theme_color": "#4a5f7f",
+  "theme_color": "#009dde",
   "icons": [
     {
-      "src": "./icon-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "./icon-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "./icon-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
-    },
-    {
-      "src": "./icon-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
-    }
-  ],
-  "categories": ["productivity", "utilities"],
-  "screenshots": [
-    {
-      "src": "./icon-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./icon-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "form_factor": "narrow"
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ]
 }
